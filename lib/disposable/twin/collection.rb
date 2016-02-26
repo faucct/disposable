@@ -15,8 +15,11 @@ module Disposable
       attr_reader :original # TODO: test me and rethink me.
 
       def find_by(options)
-        field, value = options.to_a.first
-        find { |item| item.send(field).to_s == value.to_s }
+        find do |item|
+          options.all? do |field, value|
+            item.send(field).to_s == value.to_s
+          end
+        end
       end
 
       # Note that this expects a model, untwinned.
